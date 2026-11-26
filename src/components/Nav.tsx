@@ -1,13 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { site, nav } from "@/content/site";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { site } from "@/content/site";
 import { Button } from "./Button";
-import { Globe, Pin } from "./Icons";
 
-export function Logo() {
+import odoFront from "@/assets/works/odogwu-front.jpg";
+import obiWithArtist from "@/assets/works/obiagaeli-with-artist.jpg";
+import headPainting from "@/assets/works/head-artist-painting.jpg";
+import odoFace from "@/assets/works/odogwu-detail-face.jpg";
+import obiBack from "@/assets/works/obiagaeli-back.jpg";
+import headPainting2 from "@/assets/works/head-artist-painting-2.jpg";
+
+const links = [
+  { label: "Works", href: "#works", img: odoFront, note: "Three sculptures, every angle" },
+  { label: "The Artist", href: "#artist", img: obiWithArtist, note: "Osogbo, Nigeria" },
+  { label: "Process", href: "#process", img: headPainting, note: "From raw clay to living form" },
+  { label: "Details", href: "#details", img: odoFace, note: "Surface, patina, signature" },
+  { label: "FAQ", href: "#faq", img: obiBack, note: "Commissions, shipping, care" },
+  { label: "Commission", href: "#commission", img: headPainting2, note: "Let’s shape your story" },
+];
+
+export function Logo({ onClick }: { onClick?: () => void }) {
   return (
-    <a href="#top" className="logo" aria-label={`${site.name}, home`}>
+    <a href="#top" className="logo" aria-label={`${site.name}, home`} onClick={onClick}>
       <span className="logo__mark" aria-hidden>
         Ụ
       </span>
@@ -16,36 +32,37 @@ export function Logo() {
   );
 }
 
-export function TopBar() {
-  return (
-    <div className="topbar">
-      <div className="wrap">
-        <span className="topbar__item">
-          <Pin /> Studio in {site.location}
-        </span>
-        <span className="topbar__item topbar__item--right">
-          <Globe /> Commissions open · Ships worldwide
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState(0);
+  const burger = useRef<HTMLButtonElement>(null);
 
+  // Tuck the bar away while scrolling down, bring it back on the way up.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      setHidden(y > 160 && y > lastY);
+      lastY = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("menu-open", open);
+    const html = document.documentElement;
+    html.classList.toggle("menu-open", open);
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        burger.current?.focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
@@ -54,36 +71,79 @@ export function Nav() {
 
   return (
     <>
-      <header className={`nav ${scrolled ? "is-scrolled" : ""}`}>
+      <header className={`nav ${scrolled ? "is-scrolled" : ""} ${hidden && !open ? "is-hidden" : ""}`}>
         <div className="wrap">
-          <Logo />
-          <nav className="nav__links" aria-label="Main">
-            {nav.map((l, i) => (
-              <a key={l.href} href={l.href}>
-                <sup>0{i + 1}</sup>
-                {l.label}
-              </a>
-            ))}
-          </nav>
-          <Button href="#commission" className="nav__cta">
-            Commission
-          </Button>
-          <button className="nav__burger" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
-            <span />
-            <span />
+          <Logo onClick={close} />
+          <button
+            ref={burger}
+            className="burger"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="site-menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="burger__label" aria-hidden>
+              <span>Menu</span>
+              <span>Close</span>
+            </span>
+            <span className="burger__lines" aria-hidden>
+              <i />
+              <i />
+            </span>
           </button>
         </div>
       </header>
-      <div className="mobile-menu" aria-hidden={!open} inert={!open}>
-        {nav.map((l, i) => (
-          <a key={l.href} href={l.href} onClick={close}>
-            <sup>0{i + 1}</sup>
-            {l.label}
-          </a>
-        ))}
-        <Button href="#commission" onClick={close}>
-          Commission a Piece
-        </Button>
+
+      <div id="site-menu" className="overlay" aria-hidden={!open} inert={!open}>
+        <div className="wrap overlay__grid">
+          <nav className="overlay__links" aria-label="Main">
+            {links.map((l, i) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={close}
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                className={active === i ? "is-active" : ""}
+                style={{ "--i": i } as React.CSSProperties}
+              >
+                <span className="overlay__mask">
+                  <span className="overlay__word">
+                    <sup>0{i + 1}</sup>
+                    {l.label}
+                  </span>
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          <div className="overlay__preview" aria-hidden>
+            <div className="overlay__arch">
+              {links.map((l, i) => (
+                <Image key={l.href} src={l.img} alt="" sizes="380px" className={active === i ? "is-active" : ""} />
+              ))}
+            </div>
+            <p className="overlay__note">{links[active].note}</p>
+          </div>
+        </div>
+
+        <div className="wrap overlay__foot">
+          <div>
+            <span>Studio</span>
+            {site.location}
+          </div>
+          <div>
+            <span>Enquiries</span>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </div>
+          <div>
+            <span>Availability</span>
+            Commissions open · Ships worldwide
+          </div>
+          <Button href="#commission" variant="light" onClick={close}>
+            Start a Commission
+          </Button>
+        </div>
       </div>
     </>
   );

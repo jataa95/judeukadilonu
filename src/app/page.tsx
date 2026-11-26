@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { site, works, heroShots, details, studio } from "@/content/site";
-import { Nav, TopBar, Logo } from "@/components/Nav";
+import { Nav, Logo } from "@/components/Nav";
 import { HeroRing } from "@/components/HeroRing";
 import { Works } from "@/components/Works";
 import { Angles } from "@/components/Angles";
@@ -22,7 +22,6 @@ const odogwu = works[0];
 export default function Home() {
   return (
     <>
-      <TopBar />
       <Nav />
       <main id="top">
         {/* Hero */}
