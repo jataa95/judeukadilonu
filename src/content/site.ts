@@ -30,11 +30,9 @@ export const site = {
   short: "Ụkadịlọnụ",
   role: "Multidisciplinary Artist",
   location: "Osogbo, Nigeria",
-  handle: "@jude_ukadilonu",
   url: "https://judeukadilonu.vercel.app",
-  instagram: "https://www.instagram.com/jude_ukadilonu/",
-  threads: "https://www.threads.net/@jude_ukadilonu",
-  dm: "https://ig.me/m/jude_ukadilonu",
+  // TODO: replace with the studio's real enquiry address before launch.
+  email: "hello@judeukadilonu.com",
 };
 
 export type Work = {
@@ -46,6 +44,7 @@ export type Work = {
   status: string;
   blurb: string;
   cover: Shot;
+  detail: Shot;
   shots: Shot[];
 };
 
@@ -59,6 +58,7 @@ export const works: Work[] = [
     status: "New",
     blurb:
       "A titled man in his red cap and coral beads holds his beloved close. Tenderness rendered in heavy, worked texture, and an embrace that keeps its warmth from every side.",
+    detail: { src: odoFace, alt: "Close-up of Achalugo's face resting against Odogwu" },
     cover: { src: odoFront, alt: "Odogwu and Achalugo II, a fiberglass sculpture of an elder in a red cap embracing a woman crowned in coral beads" },
     shots: [
       { src: odoFront, alt: "Odogwu and Achalugo II, front view", label: "Front" },
@@ -78,6 +78,7 @@ export const works: Work[] = [
     status: "2025",
     blurb:
       "“One who has come to live a good life.” A young woman crowned and draped in coral, her skin a living patina of green, violet and ochre.",
+    detail: { src: obiProfile, alt: "Ọbịagaeli in profile" },
     cover: { src: obiFront, alt: "Ọbịagaeli, a fibreglass bust of a young woman in coral beads with a green and blue textured patina" },
     shots: [
       { src: obiFront, alt: "Ọbịagaeli, front view", label: "Front" },
@@ -95,6 +96,7 @@ export const works: Work[] = [
     status: "Portrait",
     blurb:
       "A portrait head in the traditional red cap of Igbo titled men. Every plane of the face is pressed, pinched and painted by hand, from the furrowed brow down to the violet base.",
+    detail: { src: headRight, alt: "Portrait head in a red cap, side view" },
     cover: { src: headFront, alt: "Sculpted portrait head of a man wearing a red cap" },
     shots: [
       { src: headFront, alt: "Portrait head in a red cap, front view", label: "Front" },
@@ -136,5 +138,32 @@ export const nav = [
   { label: "Works", href: "#works" },
   { label: "The Artist", href: "#artist" },
   { label: "Process", href: "#process" },
-  { label: "Details", href: "#details" },
+  { label: "FAQ", href: "#faq" },
+];
+
+export const faqs = [
+  {
+    q: "Do you take commissions?",
+    a: "Yes. Portrait heads, busts and figurative groups can all be commissioned. Share who or what the piece is about, the size you have in mind and where it will live, and the studio will reply with a proposal.",
+  },
+  {
+    q: "What are the sculptures made of?",
+    a: "Each figure is first modelled by hand in clay. Finished works are produced in fibreglass and hand-finished with layered texture and colour, so they keep the look of aged bronze while staying light and durable.",
+  },
+  {
+    q: "Can you ship to my country?",
+    a: "Yes. Works are carefully crated in Osogbo, Nigeria and shipped to collectors worldwide. Shipping is quoted separately based on the size of the piece and the destination.",
+  },
+  {
+    q: "How long does a commission take?",
+    a: "It depends on the scale and detail of the piece. A timeline is agreed with you before work begins, and you receive progress photos from the studio along the way.",
+  },
+  {
+    q: "How do I find out the price of a work?",
+    a: "Prices are shared on request. Send an enquiry with the title of the work you are interested in, or a short description of your commission.",
+  },
+  {
+    q: "How should I care for my sculpture?",
+    a: "Display it indoors away from harsh direct sun, and dust it gently with a soft, dry brush or cloth. Avoid water and cleaning chemicals on the patina.",
+  },
 ];

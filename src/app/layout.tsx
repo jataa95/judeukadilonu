@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export const viewport: Viewport = { themeColor: "#f5f0e7" };
+export const viewport: Viewport = { themeColor: "#f3eee5" };
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const jsonLd = {
   jobTitle: "Sculptor & Multidisciplinary Artist",
   url: site.url,
   address: { "@type": "PostalAddress", addressLocality: "Osogbo", addressCountry: "NG" },
-  sameAs: [site.instagram, site.threads],
+  email: site.email,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

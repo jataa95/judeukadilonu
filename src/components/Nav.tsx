@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { site, nav } from "@/content/site";
-import { Arrow, Globe, Instagram, Pin } from "./Icons";
+import { Button } from "./Button";
+import { Globe, Pin } from "./Icons";
 
 export function Logo() {
   return (
@@ -19,19 +20,12 @@ export function TopBar() {
   return (
     <div className="topbar">
       <div className="wrap">
-        <div className="topbar__group">
-          <span className="topbar__item">
-            <Pin /> Studio in {site.location}
-          </span>
-        </div>
-        <div className="topbar__group topbar__group--right">
-          <span className="topbar__item">
-            <Globe /> Ships worldwide
-          </span>
-          <a className="topbar__item" href={site.instagram} target="_blank" rel="noreferrer">
-            <Instagram size={15} /> {site.handle}
-          </a>
-        </div>
+        <span className="topbar__item">
+          <Pin /> Studio in {site.location}
+        </span>
+        <span className="topbar__item topbar__item--right">
+          <Globe /> Commissions open · Ships worldwide
+        </span>
       </div>
     </div>
   );
@@ -64,15 +58,16 @@ export function Nav() {
         <div className="wrap">
           <Logo />
           <nav className="nav__links" aria-label="Main">
-            {nav.map((l) => (
+            {nav.map((l, i) => (
               <a key={l.href} href={l.href}>
+                <sup>0{i + 1}</sup>
                 {l.label}
               </a>
             ))}
           </nav>
-          <a className="btn" href="#commission">
-            Commission a Piece <Arrow />
-          </a>
+          <Button href="#commission" className="nav__cta">
+            Commission
+          </Button>
           <button className="nav__burger" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
             <span />
             <span />
@@ -80,14 +75,15 @@ export function Nav() {
         </div>
       </header>
       <div className="mobile-menu" aria-hidden={!open} inert={!open}>
-        {nav.map((l) => (
+        {nav.map((l, i) => (
           <a key={l.href} href={l.href} onClick={close}>
+            <sup>0{i + 1}</sup>
             {l.label}
           </a>
         ))}
-        <a className="btn" href="#commission" onClick={close}>
-          Commission a Piece <Arrow />
-        </a>
+        <Button href="#commission" onClick={close}>
+          Commission a Piece
+        </Button>
       </div>
     </>
   );

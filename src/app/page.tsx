@@ -7,29 +7,17 @@ import { Angles } from "@/components/Angles";
 import { ProcessVideo } from "@/components/ProcessVideo";
 import { Parallax } from "@/components/Parallax";
 import { Reveal } from "@/components/Reveal";
-import { Arrow, Instagram, Pin, Threads } from "@/components/Icons";
+import { Button } from "@/components/Button";
+import { Marquee } from "@/components/Marquee";
+import { Faq } from "@/components/Faq";
+import { Enquiry } from "@/components/Enquiry";
+import { Pin } from "@/components/Icons";
 
-import obiFront from "@/assets/works/obiagaeli-front.jpg";
 import obiDetail from "@/assets/works/obiagaeli-detail.jpg";
 import odoStudio from "@/assets/works/odogwu-artist-studio.jpg";
-import headLeft from "@/assets/works/head-left.jpg";
-import obiArtistSide from "@/assets/works/obiagaeli-artist-side.jpg";
-import odoSide from "@/assets/works/odogwu-side.jpg";
-import headPainting from "@/assets/works/head-artist-painting.jpg";
-import obiProfile from "@/assets/works/obiagaeli-profile.jpg";
-import odoFace from "@/assets/works/odogwu-detail-face.jpg";
+import headPainting from "@/assets/works/head-artist-painting-2.jpg";
 
 const odogwu = works[0];
-
-const floats = [
-  { src: headLeft, x: "-2%", y: "6%", w: "150px", delay: "0s" },
-  { src: obiProfile, x: "9%", y: "62%", w: "130px", delay: "-3s" },
-  { src: odoSide, x: "80%", y: "4%", w: "120px", delay: "-1.5s" },
-  { src: obiArtistSide, x: "66%", y: "14%", w: "170px", ar: "4 / 3", delay: "-5s" },
-  { src: headPainting, x: "86%", y: "58%", w: "140px", delay: "-2s" },
-  { src: odoFace, x: "20%", y: "-4%", w: "110px", ar: "1 / 1", delay: "-4s" },
-  { src: obiFront, x: "62%", y: "74%", w: "120px", ar: "1 / 1", delay: "-6s" },
-];
 
 export default function Home() {
   return (
@@ -39,31 +27,58 @@ export default function Home() {
       <main id="top">
         {/* Hero */}
         <section className="hero">
-          <div className="wrap">
+          <div className="wrap hero__inner">
+            <Reveal className="hero__corner hero__corner--l">
+              <span>N° 01–03</span>
+              <span>Selected sculpture</span>
+            </Reveal>
+            <Reveal className="hero__corner hero__corner--r">
+              <span>Clay · Fibreglass</span>
+              <span>Patina by hand</span>
+            </Reveal>
+
             <Reveal>
-              <span className="eyebrow eyebrow--plain">Sculptor · {site.location}</span>
+              <span className="eyebrow eyebrow--plain">Figurative Sculpture · {site.location}</span>
             </Reveal>
             <Reveal as="h1" className="display h1 hero__title" delay={100}>
-              Where Clay <br />
-              <em>Remembers</em> Who We Are
+              <span className="hero__line">Memory,</span>
+              <span className="hero__line hero__line--indent">
+                <em>
+                  moulded
+                  <svg className="brush" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden>
+                    <path d="M3 15c40-7 92-10 146-8 52 2 98 5 148 1-36 6-90 9-140 8-52-1-104 2-154-1z" />
+                  </svg>
+                </em>{" "}
+                by hand
+              </span>
             </Reveal>
-            <Reveal delay={200}>
-              <a className="btn" href="#works">
-                Explore the Works <Arrow />
-              </a>
+            <Reveal className="hero__sub" delay={200}>
+              <p className="lede">
+                Sculpture by {site.name}, rooted in Igbo heritage and finished to look like bronze worn soft by time.
+              </p>
+              <div className="hero__actions">
+                <Button href="#works">View the Works</Button>
+                <a className="text-link" href="#commission">
+                  Commission a piece
+                </a>
+              </div>
             </Reveal>
           </div>
           <HeroRing shots={heroShots} />
         </section>
 
+        <Marquee />
+
         <Works />
 
         {/* Every angle */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section round" style={{ paddingTop: 0 }}>
           <div className="wrap">
             <Reveal className="head head--center">
               <span className="eyebrow">In the Round</span>
-              <h2 className="display h2">One Embrace, Seen From Every Side</h2>
+              <h2 className="display h2">
+                One Embrace, Seen From <em>Every</em> Side
+              </h2>
             </Reveal>
             <Angles shots={odogwu.shots.slice(0, 5)} title={odogwu.title} meta={`${odogwu.medium} · ${odogwu.year}`} />
           </div>
@@ -92,20 +107,21 @@ export default function Home() {
                 looks like weathered bronze. They take their cues from Igbo life: red caps of titled men, coral beads at the throat, names that carry a whole
                 philosophy.
               </p>
-              <p className="lede">Each piece starts with a person and a story, and is made to be lived with. Collectors around the world receive finished works shipped from the studio.</p>
-              <a className="btn btn--light" href={site.instagram} target="_blank" rel="noreferrer">
-                Follow the Studio <Arrow />
-              </a>
-              <div className="stats">
+              <p className="lede">Each piece starts with a person and a story, and is made to be lived with. Finished works are crated in the studio and shipped to collectors worldwide.</p>
+              <dl className="practice">
                 <div>
-                  <div className="stat__num">37k+</div>
-                  <div className="stat__label">Followers on Instagram</div>
+                  <dt>Practice</dt>
+                  <dd>Figurative sculpture &amp; portraiture</dd>
                 </div>
                 <div>
-                  <div className="stat__num">286</div>
-                  <div className="stat__label">Works &amp; stories shared</div>
+                  <dt>Materials</dt>
+                  <dd>Clay, fibreglass, hand-laid patina</dd>
                 </div>
-              </div>
+                <div>
+                  <dt>Studio</dt>
+                  <dd>{site.location}</dd>
+                </div>
+              </dl>
             </Reveal>
           </div>
         </section>
@@ -117,10 +133,11 @@ export default function Home() {
               <span className="eyebrow">Behind the Name</span>
             </Reveal>
             <Reveal delay={100}>
-              <blockquote className="story__quote" style={{ margin: 0 }}>
-                <p style={{ margin: "0 0 32px" }}>
-                  “Life is a gift, and we are all visitors here, passing through, learning, growing, and leaving our mark. Ọbịagaeli reminds us of this truth.”
-                </p>
+              <blockquote className="story__quote">
+                <span className="story__mark" aria-hidden>
+                  “
+                </span>
+                Life is a gift, and we are all visitors here, passing through, learning, growing, and leaving our mark. Ọbịagaeli reminds us of this truth.
               </blockquote>
               <div className="story__meaning">
                 <span className="story__avatar">
@@ -181,14 +198,14 @@ export default function Home() {
           </div>
         </section>
 
-        <hr className="rule wrap" style={{ maxWidth: "calc(var(--wrap))" }} />
-
         {/* Details */}
-        <section className="section" id="details">
+        <section className="section details-section" id="details">
           <div className="wrap">
             <Reveal className="head head--center">
               <span className="eyebrow">Surface &amp; Detail</span>
-              <h2 className="display h2">Up Close, Every Mark Is Intentional</h2>
+              <h2 className="display h2">
+                Up Close, Every Mark Is <em>Intentional</em>
+              </h2>
             </Reveal>
             <div className="details">
               {details.map((d, i) => (
@@ -206,28 +223,37 @@ export default function Home() {
           </div>
         </section>
 
+        <Faq />
+
         {/* Commission */}
-        <section className="band visit" id="commission">
-          {floats.map((f, i) => (
-            <div
-              className="float"
-              key={i}
-              aria-hidden
-              style={{ "--x": f.x, "--y": f.y, "--w": f.w, "--ar": f.ar, "--delay": f.delay } as React.CSSProperties}
-            >
-              <Image src={f.src} alt="" sizes="170px" />
-            </div>
-          ))}
-          <Reveal className="visit__inner">
-            <span className="eyebrow eyebrow--plain">Commissions &amp; Acquisitions</span>
-            <h2 className="display h2">
-              Bring a Story Into <em>Your</em> Space
-            </h2>
-            <a className="btn btn--light" href={site.dm} target="_blank" rel="noreferrer">
-              Enquire on Instagram <Arrow />
-            </a>
-            <span className="visit__note">Portraits, busts &amp; figurative works · Ships worldwide</span>
-          </Reveal>
+        <section className="commission" id="commission">
+          <div className="wrap commission__grid">
+            <Reveal className="commission__visual">
+              <div className="commission__arch">
+                <Image src={headPainting} alt="Jude Ụkadịlọnụ working on a portrait head in the studio" placeholder="blur" sizes="(max-width: 960px) 80vw, 460px" />
+              </div>
+              <svg className="seal" viewBox="0 0 200 200" aria-hidden>
+                <defs>
+                  <path id="seal-circle" d="M100 100m-74 0a74 74 0 1 1 148 0a74 74 0 1 1-148 0" />
+                </defs>
+                <circle cx="100" cy="100" r="98" />
+                <text>
+                  <textPath href="#seal-circle">Commissions open · Ships worldwide · Made by hand ·</textPath>
+                </text>
+                <path className="seal__star" d="M100 76c3 11 9 18 22 24-13 6-19 13-22 24-3-11-9-18-22-24 13-6 19-13 22-24z" />
+              </svg>
+            </Reveal>
+            <Reveal className="commission__copy" delay={120}>
+              <span className="eyebrow">Commissions &amp; Acquisitions</span>
+              <h2 className="display h2">
+                Let’s Shape <em>Your</em> Story in Clay
+              </h2>
+              <p className="lede">
+                A grandmother’s face, a family’s title, a love that deserves to outlast us. Tell the studio about the piece you have in mind, or ask after one of the works above.
+              </p>
+              <Enquiry />
+            </Reveal>
+          </div>
         </section>
       </main>
 
@@ -236,7 +262,7 @@ export default function Home() {
           <div className="footer__top">
             <div className="footer__about">
               <Logo />
-              <p style={{ margin: 0 }}>Sculpture rooted in Igbo heritage, modelled by hand in {site.location} and shipped to collectors worldwide.</p>
+              <p>Sculpture rooted in Igbo heritage, modelled by hand in {site.location} and shipped to collectors worldwide.</p>
             </div>
             <div>
               <h4>Explore</h4>
@@ -251,7 +277,7 @@ export default function Home() {
                   <a href="#process">Process</a>
                 </li>
                 <li>
-                  <a href="#details">Details</a>
+                  <a href="#faq">FAQ</a>
                 </li>
               </ul>
             </div>
@@ -266,28 +292,28 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4>Contact</h4>
+              <h4>Studio</h4>
               <ul>
                 <li>
-                  <a href={site.dm} target="_blank" rel="noreferrer">
-                    Message on Instagram
-                  </a>
+                  <a href={`mailto:${site.email}`}>{site.email}</a>
                 </li>
-                <li>{site.handle}</li>
                 <li>{site.location}</li>
+                <li>
+                  <a href="#commission">Start a commission</a>
+                </li>
               </ul>
             </div>
           </div>
+          <div className="footer__word" aria-hidden>
+            Ụkadịlọnụ
+          </div>
           <div className="footer__bottom">
-            <span>© {new Date().getFullYear()} {site.name}. All works and images © the artist.</span>
-            <div className="socials">
-              <a className="icon-btn" href={site.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
-                <Instagram />
-              </a>
-              <a className="icon-btn" href={site.threads} target="_blank" rel="noreferrer" aria-label="Threads">
-                <Threads />
-              </a>
-            </div>
+            <span>
+              © {new Date().getFullYear()} {site.name}. All works and images © the artist.
+            </span>
+            <a href="#top" className="text-link">
+              Back to top
+            </a>
           </div>
         </div>
       </footer>

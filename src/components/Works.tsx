@@ -4,86 +4,80 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { works, type Work } from "@/content/site";
 import { Reveal } from "./Reveal";
-import { Arrow, Chevron, Close } from "./Icons";
+import { Chevron, Close } from "./Icons";
+import { Button } from "./Button";
 
 export function Works() {
   const [active, setActive] = useState<Work | null>(null);
-  const [featured, ...rest] = works;
 
   return (
-    <section className="section" id="works">
+    <section className="section works-section" id="works">
       <div className="wrap">
-        <div className="head">
+        <div className="works-head">
           <Reveal>
             <span className="eyebrow">Selected Works</span>
             <h2 className="display h2">
               Faces That Carry <em>Our</em> Stories
             </h2>
           </Reveal>
-          <Reveal className="head__side" delay={120}>
-            <p className="lede">
-              Figures modelled by hand and finished in layered, worked surfaces: chiefs in red caps, women crowned in coral, and the tenderness between them.
-            </p>
-            <a className="btn" href="#commission">
-              Enquire About a Work <Arrow />
-            </a>
+          <Reveal className="works-head__side" delay={120}>
+            <span className="works-head__count" aria-hidden>
+              ({String(works.length).padStart(2, "0")})
+            </span>
+            <p className="lede">Chiefs in red caps, women crowned in coral, and the tenderness between them, each modelled by hand and finished layer by layer.</p>
           </Reveal>
         </div>
 
-        <div className="works">
-          <Reveal className="work work--wide" as="article">
-            <WorkCard work={featured} wide onOpen={() => setActive(featured)} />
-          </Reveal>
-          {rest.map((w, i) => (
-            <Reveal className="work" as="article" key={w.slug} delay={i * 120}>
-              <WorkCard work={w} onOpen={() => setActive(w)} />
-            </Reveal>
+        <div className="opus-list">
+          {works.map((w, i) => (
+            <article className={`opus ${i % 2 ? "opus--flip" : ""}`} key={w.slug}>
+              <Reveal className="opus__visual">
+                <button className="opus__arch" onClick={() => setActive(w)} aria-label={`View ${w.shots.length} photos of ${w.title}`}>
+                  <Image src={w.cover.src} alt={w.cover.alt} placeholder="blur" sizes="(max-width: 960px) 90vw, 560px" />
+                </button>
+                <div className="opus__detail" aria-hidden>
+                  <Image src={w.detail.src} alt="" placeholder="blur" sizes="220px" />
+                </div>
+                <span className="opus__num" aria-hidden>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </Reveal>
+              <Reveal className="opus__text" delay={140}>
+                <div className="meta">
+                  <span className="meta__dot">{w.status}</span>
+                  <span>{w.medium}</span>
+                </div>
+                <h3 className="opus__title">{w.title}</h3>
+                <p className="opus__blurb">{w.blurb}</p>
+                <dl className="ledger">
+                  <div>
+                    <dt>Medium</dt>
+                    <dd>{w.medium}</dd>
+                  </div>
+                  <div>
+                    <dt>Dimensions</dt>
+                    <dd>{w.size}</dd>
+                  </div>
+                  <div>
+                    <dt>Year</dt>
+                    <dd>{w.year}</dd>
+                  </div>
+                </dl>
+                <div className="opus__actions">
+                  <Button variant="line" onClick={() => setActive(w)}>
+                    See all {w.shots.length} views
+                  </Button>
+                  <a className="text-link" href="#commission">
+                    Enquire
+                  </a>
+                </div>
+              </Reveal>
+            </article>
           ))}
         </div>
       </div>
       {active && <Lightbox work={active} onClose={() => setActive(null)} />}
     </section>
-  );
-}
-
-function WorkCard({ work, wide, onOpen }: { work: Work; wide?: boolean; onOpen: () => void }) {
-  return (
-    <>
-      <button className="work__media" onClick={onOpen} aria-label={`View ${work.shots.length} photos of ${work.title}`}>
-        <Image src={work.cover.src} alt={work.cover.alt} placeholder="blur" sizes={wide ? "(max-width: 960px) 100vw, 640px" : "(max-width: 960px) 100vw, 620px"} />
-        <span className="work__count">{work.shots.length} views</span>
-      </button>
-      <div className="work__body">
-        <div className="meta">
-          <span className="meta__dot">{work.status}</span>
-          <span>{work.medium}</span>
-        </div>
-        <h3 className="work__title">{work.title}</h3>
-        {wide && (
-          <>
-            <p className="work__blurb">{work.blurb}</p>
-            <dl className="specs">
-              <div>
-                <dt>Medium</dt>
-                <dd>{work.medium}</dd>
-              </div>
-              <div>
-                <dt>Size</dt>
-                <dd>{work.size}</dd>
-              </div>
-              <div>
-                <dt>Year</dt>
-                <dd>{work.year}</dd>
-              </div>
-            </dl>
-            <button className="link-arrow" onClick={onOpen}>
-              See every angle <Arrow />
-            </button>
-          </>
-        )}
-        {!wide && <p className="work__blurb">{work.blurb}</p>}
-      </div>
-    </>
   );
 }
 
