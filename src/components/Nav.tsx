@@ -32,6 +32,19 @@ export function Logo({ onClick }: { onClick?: () => void }) {
   );
 }
 
+/** Each letter carries a copy of itself just below (via text-shadow) and rolls up on hover, one after another. */
+function Rolling({ word }: { word: string }) {
+  return (
+    <span className="roll">
+      {word.split("").map((ch, i) => (
+        <span key={i} style={{ "--l": i } as React.CSSProperties}>
+          {ch}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -69,6 +82,23 @@ export function Nav() {
 
   const close = () => setOpen(false);
 
+  // The orb leans gently toward the cursor (fine pointers only), then settles back.
+  const magnet = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const orb = e.currentTarget.querySelector<HTMLElement>(".burger__orb");
+    if (!orb) return;
+    const r = orb.getBoundingClientRect();
+    const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+    const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+    orb.style.setProperty("--mx", `${Math.max(-1, Math.min(1, dx)) * 7}px`);
+    orb.style.setProperty("--my", `${Math.max(-1, Math.min(1, dy)) * 7}px`);
+  };
+  const release = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const orb = e.currentTarget.querySelector<HTMLElement>(".burger__orb");
+    orb?.style.setProperty("--mx", "0px");
+    orb?.style.setProperty("--my", "0px");
+  };
+
   return (
     <>
       <header className={`nav ${scrolled ? "is-scrolled" : ""} ${hidden && !open ? "is-hidden" : ""}`}>
@@ -81,14 +111,21 @@ export function Nav() {
             aria-expanded={open}
             aria-controls="site-menu"
             onClick={() => setOpen((v) => !v)}
+            onPointerMove={magnet}
+            onPointerLeave={release}
           >
             <span className="burger__label" aria-hidden>
-              <span>Menu</span>
-              <span>Close</span>
+              <Rolling word="Menu" />
+              <Rolling word="Close" />
             </span>
-            <span className="burger__lines" aria-hidden>
-              <i />
-              <i />
+            <span className="burger__orb" aria-hidden>
+              <svg className="burger__ring" viewBox="0 0 52 52">
+                <circle cx="26" cy="26" r="25" pathLength="100" />
+              </svg>
+              <span className="burger__lines">
+                <i />
+                <i />
+              </span>
             </span>
           </button>
         </div>

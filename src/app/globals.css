@@ -362,13 +362,15 @@ html.menu-open {
   letter-spacing: -0.01em;
 }
 
-/* Fine hamburger: a sliding word and two hairlines that cross into an X. */
+/* Hamburger: rolling label + a hairline orb that draws its ring, sweeps its
+   lines on hover, leans toward the cursor, and turns into a light disc with an X. */
 .burger {
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  height: 44px;
-  padding: 0 2px 0 8px;
+  gap: 16px;
+  height: 56px;
+  padding: 0 0 0 10px;
 }
 
 .burger__label {
@@ -379,22 +381,120 @@ html.menu-open {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  text-align: right;
+  justify-items: end;
 }
 
-.burger__label span {
+.burger__label > .roll {
   line-height: 1.3em;
-  transition: transform 0.7s var(--ease);
+  transition: transform 0.8s var(--ease-io), opacity 0.4s var(--ease);
 }
 
-.menu-open .burger__label span {
+.menu-open .burger__label > .roll {
   transform: translateY(-100%);
+}
+
+.menu-open .burger__label > .roll:first-child {
+  opacity: 0;
+}
+
+.roll {
+  display: flex;
+}
+
+.roll span {
+  display: inline-block;
+  text-shadow: 0 1.3em currentColor;
+  transition: transform 0.55s var(--ease-io) calc(var(--l) * 0.035s);
+}
+
+/* Only the word currently showing rolls. */
+.burger:hover .burger__label > .roll:first-child span,
+.burger:focus-visible .burger__label > .roll:first-child span,
+.menu-open .burger:hover .burger__label > .roll:last-child span,
+.menu-open .burger:focus-visible .burger__label > .roll:last-child span {
+  transform: translateY(-1.3em);
+}
+
+.menu-open .burger:hover .burger__label > .roll:first-child span {
+  transform: none;
+}
+
+.burger__orb {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition: transform 0.6s var(--ease), background 0.7s var(--ease-io), color 0.5s var(--ease);
+}
+
+/* Resting hairline ring. */
+.burger__orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent);
+  transition: opacity 0.5s var(--ease);
+}
+
+/* "Commissions open" seal: a small clay-red dot with a slow pulse. */
+.burger__orb::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--red) 55%, transparent);
+  animation: pulse 2.6s var(--ease) infinite;
+  transition: transform 0.5s var(--ease-io), opacity 0.4s var(--ease);
+}
+
+@keyframes pulse {
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px transparent;
+  }
+}
+
+.burger__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.burger__ring circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+  transition: stroke-dashoffset 1s var(--ease-io), opacity 0.3s var(--ease) 0.7s;
+}
+
+.burger:hover .burger__ring circle,
+.burger:focus-visible .burger__ring circle {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: stroke-dashoffset 1s var(--ease-io), opacity 0.1s;
 }
 
 .burger__lines {
   position: relative;
-  width: 30px;
-  height: 12px;
+  width: 20px;
+  height: 14px;
+  overflow: hidden;
+  transition: transform 0.7s var(--ease-io);
 }
 
 .burger__lines i {
@@ -402,34 +502,85 @@ html.menu-open {
   right: 0;
   height: 1px;
   background: currentColor;
-  transition: transform 0.7s var(--ease), top 0.7s var(--ease), width 0.5s var(--ease);
+  transition: transform 0.7s var(--ease-io), top 0.7s var(--ease-io), width 0.5s var(--ease);
 }
 
 .burger__lines i:first-child {
-  top: 2px;
+  top: 4px;
   width: 100%;
 }
 
 .burger__lines i:last-child {
-  top: 9px;
-  width: 62%;
+  top: 10px;
+  width: 60%;
+}
+
+/* On hover the lines sweep out to the right and re-enter from the left, one after the other. */
+.burger:hover .burger__lines i {
+  animation: sweep 0.9s var(--ease-io);
 }
 
 .burger:hover .burger__lines i:last-child {
   width: 100%;
+  animation-delay: 0.08s;
 }
 
-.menu-open .burger__lines i {
-  top: 6px;
+@keyframes sweep {
+  0% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(110%);
+  }
+  46% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Open: a light disc with a dark X that turns a quarter on hover. */
+.menu-open .burger__orb {
+  background: var(--paper);
+  color: var(--clay);
+}
+
+.menu-open .burger__orb::before,
+.menu-open .burger__ring {
+  opacity: 0;
+}
+
+.menu-open .burger__orb::after {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.menu-open .burger__lines {
+  overflow: visible;
+}
+
+.menu-open .burger__lines i,
+.menu-open .burger:hover .burger__lines i {
+  top: 7px;
   width: 100%;
+  animation: none;
 }
 
 .menu-open .burger__lines i:first-child {
-  transform: rotate(32deg);
+  transform: rotate(45deg);
 }
 
 .menu-open .burger__lines i:last-child {
-  transform: rotate(-32deg);
+  transform: rotate(-45deg);
+}
+
+.menu-open .burger:hover .burger__orb {
+  background: var(--red-soft);
+}
+
+.menu-open .burger:hover .burger__lines {
+  transform: rotate(90deg);
 }
 
 /* ---------- Menu overlay ---------- */
