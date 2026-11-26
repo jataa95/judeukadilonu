@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import "lenis/dist/lenis.css";
 import "./globals.css";
+import OjdznCredit from "../components/OjdznCredit";
 
 const sans = Inter({ variable: "--font-sans", subsets: ["latin", "latin-ext", "vietnamese"], display: "swap" });
 const serif = Playfair_Display({
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScroll />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         {children}
+        <OjdznCredit from="judeukadilonu" />
       </body>
     </html>
   );
