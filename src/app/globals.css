@@ -1,10 +1,10 @@
 :root {
-  --paper: #f3eee5;
-  --paper-2: #e8dfd0;
-  --paper-3: #faf7f1;
+  --paper: #e8e0d3;
+  --paper-2: #dcd1bf;
+  --paper-3: #f0eae0;
   --clay: #201b18;
   --clay-2: #4d433c;
-  --clay-3: #8b7f75;
+  --clay-3: #7a6e65;
   --line: rgba(32, 27, 24, 0.13);
   /* Earthy clay reds: muted, closer to fired terracotta and oxblood than to a signal red. */
   --red: #8f3d2e;
